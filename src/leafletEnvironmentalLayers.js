@@ -1,12 +1,13 @@
-require('jquery') ; 
-require('leaflet') ; 
+require('jquery') ;
+require('leaflet') ;
 
-require('./purpleAirMarkerLayer.js') ; 
-require('./purpleLayer.js') ; 
+require('./purpleAirMarkerLayer.js') ;
+require('./purpleLayer.js') ;
 require('./fractracker.js') ;
-require('./skyTruthLayer.js') ; 
+require('./skyTruthLayer.js') ;
 require('./odorReportLayer.js') ;
-require('./mapKnitterLayer.js') ; 
+require('./mapKnitterLayer.js') ;
 require('./toxicReleaseLayer.js') ;
+require('./indigenousLandsLanguagesLayer.js')
 require('leaflet-providers') ;
 require('./openWeatherMapLayer.js') ;

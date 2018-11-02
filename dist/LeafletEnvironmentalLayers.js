@@ -25850,7 +25850,7 @@ exports.map = createMap;
 },{}],8:[function(require,module,exports){
 L.Icon.FracTrackerIcon = L.Icon.extend({
    options: {
-    iconUrl: 'http://www.clker.com/cliparts/2/3/f/a/11970909781608045989gramzon_Barrel.svg.med.png',
+    iconUrl: 'https://www.clker.com/cliparts/2/3/f/a/11970909781608045989gramzon_Barrel.svg.med.png',
     iconSize:     [30, 20], 
     iconAnchor:   [20 , 0], 
     popupAnchor:  [-5, -5] 
@@ -25952,19 +25952,135 @@ L.layerGroup.fracTrackerLayer = function (options) {
 };
 
 },{}],9:[function(require,module,exports){
-require('jquery') ; 
-require('leaflet') ; 
+L.LayerGroup.IndigenousLandsLanguagesLayer = L.LayerGroup.extend(
 
-require('./purpleAirMarkerLayer.js') ; 
-require('./purpleLayer.js') ; 
+    {
+        options: {
+            url: 'https://native-land.ca/api/index.php?maps=languages&position=45,-72',
+            popupOnMouseover: false,
+            clearOutsideBounds: false,
+            target: '_self',
+            minZoom: 0,
+            maxZoom: 18
+        },
+
+        initialize: function (options) {
+            options = options || {};
+            L.Util.setOptions(this, options);
+            this._layers = {};
+
+        },
+
+        onAdd: function (map) {
+            map.on('moveend', this.requestData, this);
+            this._map = map;
+            this.requestData();
+
+        },
+
+        onRemove: function (map) {
+            map.off('moveend', this.requestData, this);
+            this.clearLayers();
+            this._layers = {};
+        },
+
+        requestData: function () {
+                var self = this ;
+                (function() {
+                    var script = document.createElement("SCRIPT");
+                    script.src = 'https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js';
+                    script.type = 'text/javascript';
+                    var zoom = self._map.getZoom(), origin = self._map.getCenter() ;
+                    script.onload = function() {
+                        var $ = window.jQuery;
+                        var ILL_url = "https://native-land.ca/api/index.php?maps=languages&position=" + parseInt(origin.lat) + "," + parseInt(origin.lng);
+                        $.getJSON(ILL_url , function(data){
+                         // console.log(parseInt(origin.lat) +" and "+parseInt(origin.lng)) ;
+                         self.parseData(data) ;
+                        });
+                    };
+                    document.getElementsByTagName("head")[0].appendChild(script);
+                })();
+
+
+        },
+
+        getPoly: function (data) {
+              var coords = data.geometry.coordinates;
+              var nme = data.properties.Name;
+              var frNme = data.properties.FrenchName;
+              var desc = data.properties.description;
+              var frDesc = data.properties.FrenchDescription;
+              var clr = data.properties.color;
+              var ill_marker ;
+              if (!isNaN((coords)) ){
+                ill_marker = L.polygon(coords, {color: clr}).bindPopup("<strong>Name : </strong>" + nme + "(" + frNme + ")<br><strong>Description : </strong>" + desc) ;
+              }
+            return ill_marker ;
+        },
+
+        addPoly: function (data) {
+            var poly = this.getPoly(data),
+             key = data.id ;
+
+            if (!this._layers[key]) {
+                this._layers[key] = poly;
+                this.addLayer(poly);
+            }
+        },
+
+        parseData: function (data) {
+
+        if (!!data){
+           for (i = 0 ; i < data.length ; i++) {
+            this.addPoly(data[i]) ;
+           }
+
+             if (this.options.clearOutsideBounds) {
+                this.clearOutsideBounds();
+            }
+          }
+        },
+
+        clearOutsideBounds: function () {
+            var bounds = this._map.getBounds(),
+                latLng,
+                key;
+
+            /*for (key in this._layers) {
+                if (this._layers.hasOwnProperty(key)) {
+                    latLng = this._layers[key].getLatLng();
+
+                    if (!bounds.contains(latLng)) {
+                        this.removeLayer(this._layers[key]);
+                        delete this._layers[key];
+                    }
+                }
+            }*/
+        }
+    }
+);
+
+L.layerGroup.indigenousLandsLanguagesLayer = function (options) {
+    return new L.LayerGroup.IndigenousLandsLanguagesLayer(options);
+};
+
+},{}],10:[function(require,module,exports){
+require('jquery') ;
+require('leaflet') ;
+
+require('./purpleAirMarkerLayer.js') ;
+require('./purpleLayer.js') ;
 require('./fractracker.js') ;
-require('./skyTruthLayer.js') ; 
+require('./skyTruthLayer.js') ;
 require('./odorReportLayer.js') ;
-require('./mapKnitterLayer.js') ; 
+require('./mapKnitterLayer.js') ;
 require('./toxicReleaseLayer.js') ;
+require('./indigenousLandsLanguagesLayer.js')
 require('leaflet-providers') ;
 require('./openWeatherMapLayer.js') ;
-},{"./fractracker.js":8,"./mapKnitterLayer.js":10,"./odorReportLayer.js":11,"./openWeatherMapLayer.js":12,"./purpleAirMarkerLayer.js":13,"./purpleLayer.js":14,"./skyTruthLayer.js":15,"./toxicReleaseLayer.js":16,"jquery":2,"leaflet":6,"leaflet-providers":5}],10:[function(require,module,exports){
+
+},{"./fractracker.js":8,"./indigenousLandsLanguagesLayer.js":9,"./mapKnitterLayer.js":11,"./odorReportLayer.js":12,"./openWeatherMapLayer.js":13,"./purpleAirMarkerLayer.js":14,"./purpleLayer.js":15,"./skyTruthLayer.js":16,"./toxicReleaseLayer.js":17,"jquery":2,"leaflet":6,"leaflet-providers":5}],11:[function(require,module,exports){
  L.Icon.MapKnitterIcon = L.Icon.extend({
     options: {
       iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
@@ -26094,7 +26210,7 @@ L.layerGroup.mapKnitterLayer = function (options) {
     return new L.LayerGroup.MapKnitterLayer(options) ;
 };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 L.Icon.OdorReportIcon = L.Icon.extend({
     options: {
       iconUrl: 'https://www.clker.com/cliparts/T/3/6/T/S/8/ink-splash-md.png',
@@ -26218,7 +26334,7 @@ L.layerGroup.odorReportLayer = function (options) {
     return new L.LayerGroup.OdorReportLayer(options);
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 L.OWM = L.TileLayer.extend({
 	options: {
 		appId: '4c6704566155a7d0d5d2f107c5156d6e', /* pass your own AppId as parameter when creating the layer. Get your own AppId at https://www.openweathermap.org/appid */
@@ -27794,7 +27910,7 @@ L.OWM.Utils = {
 
 
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 require('jquery') ; 
 require('leaflet') ; 
 
@@ -27899,7 +28015,7 @@ L.layerGroup.purpleAirMarkerLayer = function (options) {
     return new L.LayerGroup.PurpleAirMarkerLayer(options) ;
 };
 
-},{"jquery":2,"leaflet":6}],14:[function(require,module,exports){
+},{"jquery":2,"leaflet":6}],15:[function(require,module,exports){
 require('heatmap.js') ;
 require('leaflet-heatmap') ;
 
@@ -28021,7 +28137,7 @@ L.layerGroup.purpleLayer = function (options) {
     return new L.LayerGroup.PurpleLayer(options) ;
 };
 
-},{"heatmap.js":1,"leaflet-heatmap":4}],15:[function(require,module,exports){
+},{"heatmap.js":1,"leaflet-heatmap":4}],16:[function(require,module,exports){
 L.Icon.SkyTruthIcon = L.Icon.extend({
   options: {
     iconUrl: 'https://www.clker.com/cliparts/T/G/b/7/r/A/red-dot.svg',
@@ -28124,7 +28240,7 @@ L.LayerGroup.SkyTruthLayer = L.LayerGroup.extend(
 L.layerGroup.skyTruthLayer = function (options) {
   return new L.LayerGroup.SkyTruthLayer(options);
 };
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 L.Icon.ToxicReleaseIcon = L.Icon.extend({
     options: {
       iconUrl: 'https://www.clker.com/cliparts/r/M/L/o/R/i/green-dot.svg',
@@ -28256,4 +28372,4 @@ L.layerGroup.toxicReleaseLayer = function (options) {
     return new L.LayerGroup.ToxicReleaseLayer(options);
 };
 
-},{}]},{},[3,7,9]);
+},{}]},{},[3,7,10]);
