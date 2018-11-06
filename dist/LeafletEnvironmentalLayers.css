@@ -63,3 +63,8 @@
 
 .owm-legend-item {
 }
+
+.aqi-tooltip {
+	background: black;
+	color: green;
+}
