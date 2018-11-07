@@ -5,8 +5,6 @@ L.LayerGroup.AQICNLayer = L.LayerGroup.extend(
             popupOnMouseover: true,
             clearOutsideBounds: true,
             tokenID: "566331c289f0aeacd78e0b18362b4bcfa5097572",
-            minZoom: 7,
-            maxZoom: 9
         },
 
         initialize: function (options) {
@@ -83,17 +81,65 @@ L.LayerGroup.AQICNLayer = L.LayerGroup.extend(
 
         },
 
+        getMarker: function(data) {
+            var aqi = data.aqi;
+            var lat = data.lat;
+            var lon = data.lon;
+            var uid = data.uid;
+            var clName, aqiN;
+            if (isNaN(aqi))  { //If it is not a number
+                clName = "aqiNullSign";
+            }
+            else {
+                aqiN = parseInt(aqi, 10);
+                if (aqiN <= 50) {
+                    clName = "aqiGoodSign";
+                }
+                else if (aqiN <= 100) {
+                    clName = "aqiModSign";
+                }
+                else if (aqiN <= 150) {
+                    clName = "aqiSensSign";
+                }
+                else if (aqiN <= 200) {
+                    clName = "aqiUnhealthSign";
+                }
+                else if (aqiN <= 300) {
+                    clName = "aqiVUnhealthSign";
+                }
+                else {
+                    clName = "aqiHazardSign";
+                }
+            }
+            
+            return L.marker([lat, lon], {icon: L.divIcon({className: clName, iconSize: [36,25], iconAnchor: [18, 40], popupAnchor: [0, -25], html: aqi})}).bindPopup("jello");
+            //return L.marker([lat, lon]).bindPopup("hello");
+        },
+        
+        addMarkerB: function(data) {
+            var marker = this.getMarker(data);
+            
+            var key = data.uid;
+            
+            if (!this._layers[key]) {
+                this._layers[key] = marker;
+                this.addLayer(marker);   
+            }
+            
+        },
+        
         parseData: function(regionalData) {
             if(!!regionalData) {
                 console.log("made line 90");
                 for(var i = 0; i < regionalData.data.length; i++) {
                     //console.log(regionalData.data[i]);
-                    this.requestStationData(regionalData.data[i].uid);
+                    //this.requestStationData(regionalData.data[i].uid);
+                    this.addMarkerB(regionalData.data[i]);
                 }
 
-                if(this.options.clearOutsideBounds) {
-                    this.clearOutsideBounds();
-                }
+                //if(this.options.clearOutsideBounds) {
+                //    this.clearOutsideBounds();
+                //}
             }
 
         }
