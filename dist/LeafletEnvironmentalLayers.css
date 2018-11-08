@@ -64,7 +64,7 @@
 .owm-legend-item {
 }
 
-.aqiGoodSign {
+/*.aqiGoodSign {
     position: absolute;
     color:#FFFFFF;
     background-color: #009966;
@@ -73,7 +73,7 @@
     line-height: 26px;
     font-family: Arial, Helvetica, sans-serif;
 	font-size: 18px;
-    box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 2px #000000;    
+    box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 2px #000000;
 }
 
 .aqiGoodSign::after {
@@ -98,7 +98,7 @@
     line-height: 26px;
     font-family: Arial, Helvetica, sans-serif;
 	font-size: 18px;
-    box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 2px #000000;    
+    box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 2px #000000;
 }
 
 .aqiModSign::after {
@@ -123,7 +123,7 @@
     line-height: 26px;
     font-family: Arial, Helvetica, sans-serif;
 	font-size: 18px;
-    box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 2px #000000;    
+    box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 2px #000000;
 }
 
 .aqiSensSign::after {
@@ -148,7 +148,7 @@
     line-height: 26px;
     font-family: Arial, Helvetica, sans-serif;
 	font-size: 18px;
-    box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 2px #000000;    
+    box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 2px #000000;
 }
 
 .aqiUnhealthSign::after {
@@ -173,7 +173,7 @@
     line-height: 26px;
     font-family: Arial, Helvetica, sans-serif;
 	font-size: 18px;
-    box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 2px #000000;    
+    box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 2px #000000;
 }
 
 .aqiVUnhealthSign::after {
@@ -198,7 +198,7 @@
     line-height: 26px;
     font-family: Arial, Helvetica, sans-serif;
 	font-size: 18px;
-    box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 2px #000000;    
+    box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 2px #000000;
 }
 
 .aqiHazardSign::after {
@@ -217,13 +217,13 @@
 .aqiNullSign {
     position: absolute;
     color: #FFFFFF;
-    background-color: #C0C0C0;
+
     border-radius: 5px;
     text-align: center;
     line-height: 26px;
     font-family: Arial, Helvetica, sans-serif;
 	font-size: 18px;
-    box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 2px #000000;    
+    box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 2px #000000;
 }
 
 .aqiNullSign::after {
@@ -237,4 +237,33 @@
     border-left: 1px solid #000000;
     border-right: 1px solid #000000;
     border-bottom: 1px solid #000000;
+}
+*/
+.aqiSign {
+    position: absolute;
+    color:#FFFFFF;
+    background-color: #009966;
+    border-radius: 5px;
+    text-align: center;
+    line-height: 26px;
+    font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+    box-shadow: 0 0 0 1px #FFFFFF, 0 0 0 2px #000000;
+}
+
+.aqiSign::after {
+    content:"";
+    position: absolute;
+    left: 16px;
+    bottom: -15px;
+    width:3px;
+    height:12px;
+    background-color: white;
+    border-left: 1px solid #000000;
+    border-right: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+}
+
+.aqiBlue {
+	background-color: blue;
 }
